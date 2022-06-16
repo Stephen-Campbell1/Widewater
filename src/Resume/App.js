@@ -203,7 +203,7 @@ function ContactContainer(props) {
   return (
     <div className="ContactContainer">
       {/* <!-- GITHUB --> */}
-      <a href="https://github.com/Stephen-Campbell-UTD">
+      <a href={props.github}>
         <svg
           width="24"
           height="24"
@@ -234,7 +234,7 @@ function ContactContainer(props) {
       </a>
 
       {/* <!-- LINKEDIN --> */}
-      <a href="https://www.linkedin.com/in/stephen-campbell-274a37189/">
+      <a href={props.linkedin}>
         <svg
           width="24"
           height="24"
@@ -260,18 +260,21 @@ function eleMapper(obj, ele) {
 
 function App() {
   const [resume, setResume] = useState(null);
-  useEffect(
-    () => async () => {
-      const res = await fetch(
-        "https://raw.githubusercontent.com/Stephen-Campbell1/Resume/main/resume.toml"
-      );
-      const resumeTOMLTxt = await res.text();
-      const parsedResume = toml.parse(resumeTOMLTxt);
-      console.log(parsedResume);
-      setResume(parsedResume);
-    },
-    [setResume]
-  );
+  useEffect(() => {
+    const fetchResume = async () => {
+      try {
+        const res = await fetch(
+          "https://raw.githubusercontent.com/Stephen-Campbell1/Resume/main/resume.toml"
+        );
+        const resumeTOMLTxt = await res.text();
+        const parsedResume = toml.parse(resumeTOMLTxt);
+        setResume(parsedResume);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchResume().catch(console.error);
+  }, [setResume]);
 
   if (resume === null) {
     return <div></div>;
@@ -320,7 +323,11 @@ function App() {
 
       <div className="HeaderContainer">
         <h1 className="NamePlate">{resume.Contact.name}</h1>
-        <ContactContainer email={resume.Contact.email} />
+        <ContactContainer
+          email={resume.Contact.email}
+          github={resume.Contact.github}
+          linkedin={resume.Contact.linkedin}
+        />
         {/* <NavContainer /> */}
       </div>
       <Section name="Education">{educationElements}</Section>
