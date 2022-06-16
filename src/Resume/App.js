@@ -32,7 +32,9 @@ function Education(props) {
     <>
       <div className="RowContainer">
         <p className="Desc DescBold MaxHalf">{`${props.type}`}</p>
-        <p className="Desc MaxHalf">{`${props.completedMonthYear}`}</p>
+        <p className="Desc MaxHalf">{`${dateStringToMonthYear(
+          props.completed
+        )}`}</p>
       </div>
       <div className="RowContainer">
         <p className="Desc MaxHalf">{`${props.school}`}</p>
