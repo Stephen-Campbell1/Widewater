@@ -5,6 +5,8 @@ import {
   CredentialResponse,
 } from "@react-oauth/google";
 
+import ResumeApp from "./Resume/App.js";
+
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 
@@ -62,22 +64,23 @@ async function responseGoogle(response: CredentialResponse) {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <p>Hello world</p>
-        <GoogleLogin
-          onSuccess={responseGoogle}
-          onError={() => console.log("Failed")}
-        />
-      </div>
-    </GoogleOAuthProvider>
+    <ResumeApp />
+    // <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+    //   <div
+    //     style={{
+    //       display: "flex",
+    //       flexDirection: "row",
+    //       alignItems: "center",
+    //       justifyContent: "center",
+    //     }}
+    //   >
+    //     <p>Hello world</p>
+    //     <GoogleLogin
+    //       onSuccess={responseGoogle}
+    //       onError={() => console.log("Failed")}
+    //     />
+    //   </div>
+    // </GoogleOAuthProvider>
   );
 }
 
