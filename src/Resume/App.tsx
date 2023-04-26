@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
-import favicon from "./assets/favicon.ico";
 import socialImage from "./assets/social-image.png";
 import appleTouchIcon from "./assets/apple-touch-icon.png";
 import toml from "toml";
 import "./app.scss";
+import favicon from "./assets/favicon.ico";
 
-function dateStringToMonthYear(dateString) {
+function dateStringToMonthYear(dateString: string) {
   const dt = new Date(dateString);
   const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(dt);
   const year = dt.getFullYear();
   return `${month} ${year}`;
 }
 
-function convertNoBreakSpace(str) {
+function convertNoBreakSpace(str: string) {
   return str.replaceAll(" ", "\u00A0");
 }
 
-function formatDateSpan(start, end) {
+function formatDateSpan(start: string, end: string) {
   return (
     <span>
       {`${convertNoBreakSpace(start)}`} – <wbr />
@@ -27,91 +27,144 @@ function formatDateSpan(start, end) {
   );
 }
 
-function Education(props) {
+interface EducationProps {
+  completed: string
+  school: string
+  gpa: string
+  honors: string
+  type: string
+}
+
+
+function Education(props: EducationProps) {
   return (
     <>
-      <div className="RowContainer">
-        <p className="Desc DescBold MaxHalf">{`${props.type}`}</p>
-        <p className="Desc MaxHalf">{`${dateStringToMonthYear(
-          props.completed
-        )}`}</p>
+      <div className="RowContainer" >
+        <p className="Desc DescBold MaxHalf" > {`${props.type}`} </p>
+        < p className="Desc MaxHalf" > {`${dateStringToMonthYear(props.completed)}`}</p>
       </div>
-      <div className="RowContainer">
-        <p className="Desc MaxHalf">{`${props.school}`}</p>
-        <p className="Desc DescBold MaxHalf">{`${props.gpa}`}</p>
+      <div className="RowContainer" >
+        <p className="Desc MaxHalf" > {`${props.school}`}</p>
+        <p className="Desc DescBold MaxHalf" > {`${props.gpa}`}</p>
       </div>
-      <p className="Desc DescItalic">{`${props.honors}`}</p>
+      <div className="RowContainer" >
+        <p className="Desc DescItalic" > {`${props.honors}`}</p>
+      </div>
     </>
   );
 }
 
-function ProfessionalExperience(props) {
+interface ProfessionalExperienceProps {
+  takeaways: string[]
+  title: string
+  start: string
+  end: string
+  employer: string
+  location: string
+}
+
+
+function ProfessionalExperience(props: ProfessionalExperienceProps) {
   const takeawayElements = props.takeaways.map((takeaway, index) => {
-    return <li key={index}>{`${takeaway}`}</li>;
+    return <li key={index}> {`${takeaway}`
+    }</li>;
   });
   return (
     <>
-      <div className="RowContainer">
-        <p className="Desc DescBold MaxHalf">{`${props.title}`}</p>
+      <div className="RowContainer" >
+        <p className="Desc DescBold MaxHalf" > {`${props.title}`}</p>
         <p className="Desc MaxHalf " style={{ textAlign: "right" }}>
-          {formatDateSpan(
-            dateStringToMonthYear(props.start),
-            dateStringToMonthYear(props.end)
-          )}
+          {
+            formatDateSpan(
+              dateStringToMonthYear(props.start),
+              dateStringToMonthYear(props.end)
+            )}
         </p>
       </div>
-      <div className="RowContainer">
-        <p className="Desc MaxHalf">{`${props.employer}`}</p>
-        <p className="Desc MaxHalf">{`${props.location}`}</p>
+      < div className="RowContainer" >
+        <p className="Desc MaxHalf" > {`${props.employer}`}</p>
+        < p className="Desc MaxHalf" > {`${props.location}`}</p>
       </div>
-      <ul className="Bullets Takeaways">{takeawayElements}</ul>
+      < ul className="Bullets Takeaways" > {takeawayElements} </ul>
     </>
   );
 }
 
-function Project(props) {
+interface Technology {
+  link: string
+  title: string
+}
+
+interface ProjectProps {
+  TechnologiesUsed: Technology[]
+  takeaways: string[]
+  title: string
+  start: string
+  end: string
+}
+
+
+function Project(props: ProjectProps) {
   const technologiesUsed = props.TechnologiesUsed.map((ele, index) => {
     const commaStr = props.TechnologiesUsed.length - 1 === index ? "" : ", ";
     return (
-      <span key={index}>
-        <a href={ele.link}>{`${ele.title}`}</a>
+      <span key={index} >
+        <a href={ele.link}> {`${ele.title}`
+        }</a>
         {commaStr}
       </span>
     );
   });
   const takeawayElements = props.takeaways.map((takeaway, index) => {
-    return <li key={index}>{`${takeaway}`}</li>;
+    return <li key={index}> {`${takeaway}`
+    }</li>;
   });
   return (
     <>
-      <div className="RowContainer">
-        <p className="Desc DescBold MaxHalf">{`${props.title}`}</p>
-        <p className="Desc MaxHalf" style={{ textAlign: "right" }}>
-          {formatDateSpan(
-            dateStringToMonthYear(props.start),
-            dateStringToMonthYear(props.end)
-          )}
+      <div className="RowContainer" >
+        <p className="Desc DescBold MaxHalf" > {`${props.title}`}</p>
+        < p className="Desc MaxHalf" style={{ textAlign: "right" }}>
+          {
+            formatDateSpan(
+              dateStringToMonthYear(props.start),
+              dateStringToMonthYear(props.end)
+            )}
         </p>
       </div>
-      <p className="Desc MaxHalf">
-        <span className="DescBold">Technologies Used: </span>
+      < p className="Desc MaxHalf" >
+        <span className="DescBold" > Technologies Used: </span>
         {technologiesUsed}
       </p>
-      <ul className="Bullets Takeaways">{takeawayElements}</ul>
+      < ul className="Bullets Takeaways" > {takeawayElements} </ul>
     </>
   );
 }
 
-function Skills(props) {
+
+interface Skill {
+  name: string
+}
+
+interface SkillsProps {
+  skillList: Skill[]
+}
+
+
+function Skills(props: SkillsProps) {
   const skillStr = props.skillList.map((skill) => skill.name).join(", ");
   return (
-    <ul className="Bullets Skills">
-      <li>Proficent with {`${skillStr}`}</li>
+    <ul className="Bullets Skills" >
+      <li>Proficent with {`${skillStr}`} </li>
     </ul>
   );
 }
 
-function Section(props) {
+interface SectionProps {
+  name: string
+  children: React.ReactNode
+}
+
+function Section(props: SectionProps) {
   const childVariant = {
     hidden: { opacity: 0, x: -25 },
     show: {
@@ -129,9 +182,10 @@ function Section(props) {
       variants={childVariant}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true }}
+      viewport={{ once: true }
+      }
     >
-      <h2 className="SectionHeader">{props.name}</h2>
+      <h2 className="SectionHeader" > {props.name} </h2>
       {props.children}
     </motion.section>
   );
@@ -139,8 +193,8 @@ function Section(props) {
 
 function NavContainer() {
   return (
-    <div className="NavContainer">
-      <svg viewBox="0 0 96 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div className="NavContainer" >
+      <svg viewBox="0 0 96 49" fill="none" xmlns="http://www.w3.org/2000/svg" >
         <rect
           x="95.5"
           y="1.24243"
@@ -154,7 +208,7 @@ function NavContainer() {
         />
         <rect width="48" height="48.2576" rx="3" fill="black" />
         {/* <!-- PROFILE --> */}
-        <g>
+        < g >
           <path
             d="M31.6374 31.3385C32.1967 31.2231 32.5294 30.6373 32.2476 30.1406C31.6415 29.0722 30.6917 28.1333 29.4788 27.4167C27.907 26.4882 25.9812 25.9848 24 25.9848C22.0188 25.9848 20.0929 26.4882 18.5211 27.4167C17.3082 28.1333 16.3585 29.0722 15.7524 30.1406C15.4705 30.6373 15.8033 31.2231 16.3626 31.3385V31.3385C21.4011 32.378 26.5988 32.378 31.6374 31.3385V31.3385Z"
             fill="white"
@@ -200,12 +254,17 @@ function NavContainer() {
     </div>
   );
 }
+interface ContactContainerProps {
+  github: string
+  linkedin: string
+  email: string
+}
 
-function ContactContainer(props) {
+function ContactContainer(props: ContactContainerProps) {
   return (
-    <div className="ContactContainer">
+    <div className="ContactContainer" >
       {/* <!-- GITHUB --> */}
-      <a href={props.github}>
+      < a href={props.github} >
         <svg
           width="24"
           height="24"
@@ -254,14 +313,14 @@ function ContactContainer(props) {
   );
 }
 
-function eleMapper(obj, ele) {
-  return Object.values(obj).map((props, index) =>
+function eleMapper(obj: any, ele: any) {
+  return Object.values(obj).map((props: any, index) =>
     React.createElement(ele, { key: index, ...props })
   );
 }
 
 function App() {
-  const [resume, setResume] = useState(null);
+  const [resume, setResume] = useState<any>(null);
   useEffect(() => {
     const fetchResume = async () => {
       try {
@@ -288,25 +347,12 @@ function App() {
     ProfessionalExperience
   );
   const projectElements = eleMapper(resume.Project, Project);
-  // const parentVariant = {
-  //   hidden: { opacity: 0 },
-  //   show: {
-  //     opacity: 1,
-  // transition: {
-  //   duration: 0,
-  //   staggerChildren: 0.3,
-  // },
-  //   },
-  // };
   return (
     <motion.div
       className="MainContainer"
-      // variants={parentVariant}
-      // initial="show"
-      // animate="show"
     >
       <Helmet>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <link rel="icon" href={favicon} />
         <meta
           name="description"
@@ -323,21 +369,21 @@ function App() {
         <title>Stephen Campbell's Resume</title>
       </Helmet>
 
-      <div className="HeaderContainer">
-        <h1 className="NamePlate">{resume.Contact.name}</h1>
-        <ContactContainer
+      < div className="HeaderContainer" >
+        <h1 className="NamePlate" > {resume.Contact.name} </h1>
+        < ContactContainer
           email={resume.Contact.email}
           github={resume.Contact.github}
           linkedin={resume.Contact.linkedin}
         />
         {/* <NavContainer /> */}
       </div>
-      <Section name="Education">{educationElements}</Section>
-      <Section name="Professional Experience">
+      < Section name="Professional Experience" >
         {professionalExperienceElements}
       </Section>
-      <Section name="Projects">{projectElements}</Section>
-      <Section name="Skills">
+      < Section name="Education" > {educationElements} </Section>
+      < Section name="Projects" > {projectElements} </Section>
+      < Section name="Skills" >
         <Skills skillList={resume.Skills} />
       </Section>
     </motion.div>
